@@ -1,0 +1,159 @@
+{
+  "dimensions": [
+    {
+      "name": "products",
+      "label": "Product",
+      "levels": [
+        {
+          "name": "programs",
+          "label": "Programs",
+          "attributes": [
+            "program_code",
+            "program_name"
+          ]
+        },
+        {
+          "name": "products",
+          "label": "Products",
+          "attributes": [
+            "code",
+            "primaryname",
+            "strength",
+            "description"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "facilities",
+      "label": "Facility",
+      "attributes": [
+        "id",
+        "name"
+      ]
+    },
+    {
+      "name": "date_base_full",
+      "label": "Date Base Full",
+      "info": {
+        "cv-datefilter": true,
+        "cv-datefilter-hierarchy": "daily"
+      },
+      "levels": [
+        {
+          "name": "year",
+          "label": "Year",
+          "info": {
+            "cv-datefilter-field": "year"
+          }
+        },
+        {
+          "name": "month",
+          "label": "Month",
+          "info": {
+            "cv-datefilter-field": "month"
+          }
+        },
+        {
+          "name": "week",
+          "label": "Week",
+          "info": {
+            "cv-datefilter-field": "week"
+          }
+        },
+        {
+          "name": "day",
+          "label": "Day",
+          "info": {
+            "cv-datefilter-field": "day"
+          }
+        }
+      ],
+      "hierarchies": [
+        {
+          "name": "daily",
+          "label": "Daily",
+          "levels": [
+            "year",
+            "month",
+            "day"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "created_date",
+      "label": "Created Date",
+      "role": "time",
+      "template": "date_base_full"
+    }
+  ],
+  "cubes": [
+    {
+      "name": "requisition_line_items",
+      "dimensions": [
+        "products",
+        "facilities",
+        "created_date"
+      ],
+      "measures": [
+        {
+          "name": "stockinhand",
+          "label": "Stock In Hand"
+        }
+      ],
+      "aggregates": [
+        {
+          "name": "stockinhand_sum",
+          "label": "Total Stock in Hand",
+          "measure": "stockinhand",
+          "function": "sum"
+        }
+      ],
+      "joins": [
+        {
+          "master": "program_products.programid",
+          "detail": "programs.id"
+        },
+        {
+          "master": "products.id",
+          "detail": "program_products.productid"
+        },
+        {
+          "master": "productcode",
+          "detail": "products.code"
+        },
+        {
+          "master": "requisitions.facilityid",
+          "detail": "facilities.id"
+        },
+        {
+          "master": "rnrid",
+          "detail": "requisitions.id"
+        }
+      ],
+      "mappings": {
+        "products.program_code": "programs.code",
+        "products.program_name": "programs.name",
+        "created_date.year": {
+          "column": "createddate",
+          "extract": "year"
+        },
+        "created_date.month": {
+          "column": "createddate",
+          "extract": "month"
+        },
+        "created_date.week": {
+          "column": "createddate",
+          "extract": "week"
+        },
+        "created_date.day": {
+          "column": "createddate",
+          "extract": "day"
+        }
+      },
+      "info": {
+      }
+    }
+  ]
+}
