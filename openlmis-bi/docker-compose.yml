@@ -1,0 +1,30 @@
+sd-postgres:
+  container_name: sd-postgres
+  image: postgres
+  environment:
+    POSTGRES_PASSWORD: mysecretpassword
+  volumes:
+    - .:/work
+
+sd-cubes:
+  container_name: sd-cubes
+  image: h12w/cubes
+  links:
+    - sd-postgres
+  volumes:
+    - .:/cubes
+  expose:
+    - "5000"
+  ports:
+    - "5000:5000"
+
+sd-cubes-viewer:
+  container_name: sd-cubes-viewer
+  image: h12w/cubes-viewer
+  links:
+    - sd-cubes
+  environment:
+    ADMIN_PASS: mysecretpassword
+    CUBES_HOST: "http://172.17.0.3:5000"
+  ports:
+    - "8000:8000"
