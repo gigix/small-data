@@ -15,8 +15,6 @@ sd-cubes:
     - .:/cubes
   expose:
     - "5000"
-  ports:
-    - "5000:5000"
 
 sd-cubes-viewer:
   container_name: sd-cubes-viewer
