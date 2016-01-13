@@ -17,8 +17,6 @@ sd-cubes:
     - "5000"
   ports:
     - "5000:5000"
-  extra_hosts:
-    - "sd-postgres:${SD_POSTGRES_PORT_5432_TCP_ADDR}"
 
 sd-cubes-viewer:
   container_name: sd-cubes-viewer
@@ -30,5 +28,3 @@ sd-cubes-viewer:
     CUBES_HOST: "http://sd-cubes:5000"
   ports:
     - "8000:8000"
-  extra_hosts:
-    - "sd-cubes:${SD_CUBES_PORT_5000_TCP_ADDR}"
